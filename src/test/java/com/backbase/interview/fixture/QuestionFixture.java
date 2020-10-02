@@ -1,11 +1,13 @@
-package com.backbase.interview.mother;
+package com.backbase.interview.fixture;
+
+import static java.util.Arrays.asList;
 
 import com.backbase.interview.domain.Question;
 import com.backbase.interview.request.QuestionRequest;
 
-public class QuestionMother {
+public class QuestionFixture {
     
-    private QuestionMother() {
+    private QuestionFixture() {
     }
     
     public static Question getQuestion() {
@@ -22,6 +24,15 @@ public class QuestionMother {
             setAuthor("Pepper Pots");
             setMessage("Beats me!");
             setParentQuestion(getQuestion());
+        }};
+    }
+    
+    public static Question getQuestionWithinReplies() {
+        return new Question() {{
+            setId(2L);
+            setAuthor("Pepper Pots");
+            setMessage("Beats me!");
+            setReplies(asList(getQuestion(), getQuestion()));
         }};
     }
     

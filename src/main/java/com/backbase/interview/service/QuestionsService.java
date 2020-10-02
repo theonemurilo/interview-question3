@@ -31,11 +31,9 @@ public class QuestionsService {
     
     public ReplyResponse createReply(Long questionId, QuestionRequest questionRequest) {
         Question question = findQuestionById(questionId);
-        
-        if (question.getParentQuestion().isPresent()) {
-            throw new UnprocessableEntityException("you cannot reply another reply.");
-        }
-        
+    
+        validateIfNotThread(question);
+    
         Question reply = questionRequest.toDomain();
         reply.setParentQuestion(question);
         Question savedReply = repository.save(reply);
@@ -46,6 +44,8 @@ public class QuestionsService {
     @Transactional(readOnly = true)
     public ThreadResponse getThreadByQuestionId(Long questionId) {
         Question question = findQuestionById(questionId);
+        
+        validateIfNotThread(question);
         
         return ThreadResponse.fromDomain(question);
     }
@@ -58,5 +58,11 @@ public class QuestionsService {
     private Question findQuestionById(Long questionId) {
         return repository.findById(questionId).orElseThrow(() ->
             new NotFoundException(format("questionId=%d does not exist.", questionId)));
+    }
+    
+    private void validateIfNotThread(Question question) {
+        if (question.isReply()) {
+            throw new UnprocessableEntityException("you cannot reply another reply.");
+        }
     }
 }

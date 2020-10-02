@@ -36,4 +36,8 @@ public class Question extends DomainEntity {
     public Optional<Question> getParentQuestion() {
         return ofNullable(parentQuestion);
     }
+    
+    public boolean isReply() {
+        return getParentQuestion().isPresent();
+    }
 }

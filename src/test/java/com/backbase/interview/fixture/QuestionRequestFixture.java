@@ -1,10 +1,10 @@
-package com.backbase.interview.mother;
+package com.backbase.interview.fixture;
 
 import com.backbase.interview.request.QuestionRequest;
 
-public class QuestionRequestMother {
+public class QuestionRequestFixture {
     
-    private QuestionRequestMother() {
+    private QuestionRequestFixture() {
     }
     
     public static QuestionRequest getQuestionRequest() {
