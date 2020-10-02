@@ -8,6 +8,7 @@ import com.backbase.interview.response.ReplyResponse;
 import com.backbase.interview.response.ThreadResponse;
 import com.backbase.interview.service.QuestionsService;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/questions")
+@Valid
 public class QuestionsController {
     
     private final QuestionsService service;
@@ -34,7 +36,7 @@ public class QuestionsController {
     @ResponseStatus(CREATED)
     public ReplyResponse createReply(@PathVariable("questionId") Long questionId,
         @RequestBody QuestionRequest questionRequest) {
-        return service.createReply(questionRequest);
+        return service.createReply(questionId, questionRequest);
     }
     
     @GetMapping("/{questionId}")

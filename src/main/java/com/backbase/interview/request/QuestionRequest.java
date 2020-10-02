@@ -1,13 +1,22 @@
 package com.backbase.interview.request;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.backbase.interview.domain.Question;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
-@JsonInclude(Include.NON_NULL)
 @Data
 public class QuestionRequest {
     
+    @NotBlank
     private String author;
+    
+    @NotBlank
     private String message;
+    
+    public Question toDomain() {
+        Question question = new Question();
+        question.setAuthor(author);
+        question.setMessage(message);
+        return question;
+    }
 }
