@@ -1,15 +1,13 @@
 package com.backbase.interview;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+/**
+ * Super class for integrated tests
+ */
 @SpringBootTest
 @ActiveProfiles("test")
-class QuestionsApplicationTests {
-    
-    @Test
-    void contextLoads() {
-    }
-    
+abstract public class QuestionsApplicationTests {
+
 }

@@ -8,14 +8,15 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import java.util.List;
 import lombok.Data;
 
+/**
+ * Sub Question Response Object (see {@link BasicQuestionResponse}) which also includes all of its
+ * replies ({@link BasicQuestionResponse}).
+ */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class ThreadResponse {
+public class ThreadResponse extends BasicQuestionResponse {
     
-    private Long id;
-    private String author;
-    private String message;
-    private List<ReplyResponse> replies;
+    private List<BasicQuestionResponse> replies;
     
     public static ThreadResponse fromDomain(Question question) {
         ThreadResponse threadResponse = new ThreadResponse();
@@ -23,7 +24,8 @@ public class ThreadResponse {
         threadResponse.setAuthor(question.getAuthor());
         threadResponse.setMessage(question.getMessage());
         threadResponse.setReplies(
-            question.getReplies().stream().map(ReplyResponse::fromDomain).collect(toList()));
+            question.getReplies().stream().map(BasicQuestionResponse::fromDomain)
+                .collect(toList()));
         
         return threadResponse;
     }

@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+/**
+ * Bootstrap class for this SpringBoot Application
+ */
 @SpringBootApplication
 @EnableConfigurationProperties
 @EntityScan(basePackages = {"com.backbase.interview.domain"})

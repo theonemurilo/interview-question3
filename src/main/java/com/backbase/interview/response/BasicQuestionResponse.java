@@ -6,21 +6,21 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Data;
 
 /**
- * Sub Question Response Object (see {@link BasicQuestionResponse}) which also includes the number
- * of replies.
+ * Basic Object for all Question Responses.
  */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class QuestionResponse extends BasicQuestionResponse {
+public class BasicQuestionResponse {
     
-    private Integer replies;
+    private Long id;
+    private String author;
+    private String message;
     
-    public static QuestionResponse fromDomain(Question question) {
+    public static BasicQuestionResponse fromDomain(Question question) {
         QuestionResponse questionResponse = new QuestionResponse();
         questionResponse.setId(question.getId());
         questionResponse.setAuthor(question.getAuthor());
         questionResponse.setMessage(question.getMessage());
-        questionResponse.setReplies(question.getReplies().size());
         
         return questionResponse;
     }

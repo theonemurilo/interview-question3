@@ -28,6 +28,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+/**
+ * Unit tests for {@link QuestionsService}
+ */
 @ExtendWith(MockitoExtension.class)
 class QuestionsServiceTest {
     
@@ -37,6 +40,9 @@ class QuestionsServiceTest {
     @Mock(stubOnly = true)
     private QuestionsRepository repository;
     
+    /**
+     * Happy path for creating a question
+     */
     @Test
     public void should_create_question() {
         QuestionRequest request = getQuestionRequest();
@@ -52,6 +58,9 @@ class QuestionsServiceTest {
         assertThat(response.getReplies()).isEqualTo(0);
     }
     
+    /**
+     * Happy path for creating a reply of a question
+     */
     @Test
     public void should_create_reply() {
         QuestionRequest replyRequest = getReplyRequest();
@@ -71,6 +80,9 @@ class QuestionsServiceTest {
             .isEqualTo(replySaved.getParentQuestion().get().getId());
     }
     
+    /**
+     * Validates if the question does not exist when trying to create a reply
+     */
     @Test
     public void should_throw_not_found_when_creating_reply_and_parent_question_does_not_exist() {
         QuestionRequest replyRequest = getReplyRequest();
@@ -81,6 +93,9 @@ class QuestionsServiceTest {
             () -> service.createReply(parentQuestionId, replyRequest));
     }
     
+    /**
+     * Validates if the question existent is also a reply when creating a reply
+     */
     @Test
     public void should_throw_unprocessable_entity_when_creating_reply_and_parent_question_is_also_a_reply() {
         Long parentQuestionId = 1L;
@@ -92,6 +107,9 @@ class QuestionsServiceTest {
             () -> service.createReply(parentQuestionId, replyRequest));
     }
     
+    /**
+     * Happy path for get a thread by question id
+     */
     @Test
     public void should_get_thread_by_question_id() {
         Long questionId = 1L;
@@ -106,6 +124,9 @@ class QuestionsServiceTest {
         assertThat(threadResponse.getReplies()).hasSize(thread.getReplies().size());
     }
     
+    /**
+     * Validates if the question does not exist when getting the thread by question id
+     */
     @Test
     public void should_throw_not_found_when_trying_to_get_thread_and_question_does_not_exist() {
         Long questionId = 1L;
@@ -114,6 +135,9 @@ class QuestionsServiceTest {
         assertThrows(NotFoundException.class, () -> service.getThreadByQuestionId(questionId));
     }
     
+    /**
+     * Validates if the question existent is actually a reply when trying to get the thread
+     */
     @Test
     public void should_throw_unprocessable_entity_when_trying_to_get_thread_and_question_found_is_a_reply() {
         Long questionId = 1L;
@@ -124,6 +148,9 @@ class QuestionsServiceTest {
             () -> service.getThreadByQuestionId(questionId));
     }
     
+    /**
+     * Happy path for getting all questions
+     */
     @Test
     public void should_get_questions() {
         Question question = getQuestionWithinReplies();

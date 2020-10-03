@@ -18,24 +18,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Class responsible to control the requests for {@link com.backbase.interview.domain.Question}
+ * operations.
+ */
 @AllArgsConstructor
 @RestController
 @RequestMapping("/questions")
-@Valid
 public class QuestionsController {
     
     private final QuestionsService service;
     
     @PostMapping
     @ResponseStatus(CREATED)
-    public QuestionResponse createQuestion(@RequestBody QuestionRequest questionRequest) {
+    public QuestionResponse createQuestion(@RequestBody @Valid QuestionRequest questionRequest) {
         return service.createQuestion(questionRequest);
     }
     
     @PostMapping("/{questionId}")
     @ResponseStatus(CREATED)
     public ReplyResponse createReply(@PathVariable("questionId") Long questionId,
-        @RequestBody QuestionRequest questionRequest) {
+        @RequestBody @Valid QuestionRequest questionRequest) {
         return service.createReply(questionId, questionRequest);
     }
     

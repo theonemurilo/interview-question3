@@ -16,6 +16,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Service that manages all Question Operations.
+ */
 @AllArgsConstructor
 @Transactional
 @Service
@@ -23,17 +26,30 @@ public class QuestionsService {
     
     private final QuestionsRepository repository;
     
+    /**
+     * Creates a {@link Question}.
+     *
+     * @return a created {@link Question} converted in the {@link QuestionResponse}
+     */
     public QuestionResponse createQuestion(QuestionRequest questionRequest) {
         Question question = repository.save(questionRequest.toDomain());
         
         return QuestionResponse.fromDomain(question);
     }
     
+    /**
+     * Creates a reply for an existent {@link Question}
+     *
+     * @param questionId the existent {@link Question}
+     * @return a created reply {@link Question} converted in the {@link ReplyResponse}
+     */
     public ReplyResponse createReply(Long questionId, QuestionRequest questionRequest) {
         Question question = findQuestionById(questionId);
-    
-        validateIfNotThread(question);
-    
+        
+        if (question.isReply()) {
+            throw new UnprocessableEntityException("it is not possible reply another reply!");
+        }
+        
         Question reply = questionRequest.toDomain();
         reply.setParentQuestion(question);
         Question savedReply = repository.save(reply);
@@ -41,15 +57,29 @@ public class QuestionsService {
         return ReplyResponse.fromDomain(savedReply);
     }
     
+    /**
+     * Return a {@link Question} and its replies
+     *
+     * @param questionId the question to be returned
+     * @return a {@link Question} within all its replies converted in {@link ThreadResponse}
+     */
     @Transactional(readOnly = true)
     public ThreadResponse getThreadByQuestionId(Long questionId) {
         Question question = findQuestionById(questionId);
         
-        validateIfNotThread(question);
+        if (question.isReply()) {
+            throw new UnprocessableEntityException(
+                format("the questionId=%d is a reply, not a thread!", questionId));
+        }
         
         return ThreadResponse.fromDomain(question);
     }
     
+    /**
+     * Returns all questions
+     *
+     * @return a {@link List} of {@link QuestionResponse}
+     */
     @Transactional(readOnly = true)
     public List<QuestionResponse> getQuestions() {
         return repository.findAll().stream().map(QuestionResponse::fromDomain).collect(toList());
@@ -58,11 +88,5 @@ public class QuestionsService {
     private Question findQuestionById(Long questionId) {
         return repository.findById(questionId).orElseThrow(() ->
             new NotFoundException(format("questionId=%d does not exist.", questionId)));
-    }
-    
-    private void validateIfNotThread(Question question) {
-        if (question.isReply()) {
-            throw new UnprocessableEntityException("you cannot reply another reply.");
-        }
     }
 }

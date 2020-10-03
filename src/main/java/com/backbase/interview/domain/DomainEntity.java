@@ -8,6 +8,9 @@ import javax.persistence.SequenceGenerator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Basic super class entity
+ */
 @Data
 @MappedSuperclass
 @EqualsAndHashCode

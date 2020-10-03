@@ -7,10 +7,10 @@ import lombok.Data;
 @Data
 public class QuestionRequest {
     
-    @NotBlank
+    @NotBlank(message = "author is required")
     private String author;
     
-    @NotBlank
+    @NotBlank(message = "message is required")
     private String message;
     
     public Question toDomain() {

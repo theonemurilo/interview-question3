@@ -14,6 +14,9 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * Question Entity
+ */
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity

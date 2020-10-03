@@ -5,14 +5,15 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import lombok.Data;
 
+/**
+ * Sub Question Response Object (see {@link BasicQuestionResponse}) which also includes the parent
+ * question id.
+ */
 @Data
 @JsonInclude(Include.NON_NULL)
-public class ReplyResponse {
+public class ReplyResponse extends BasicQuestionResponse {
     
-    private Long id;
     private Long questionId;
-    private String author;
-    private String message;
     
     public static ReplyResponse fromDomain(Question question) {
         ReplyResponse replyResponse = new ReplyResponse();
